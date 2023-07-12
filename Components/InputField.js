@@ -1,4 +1,4 @@
-import { View, TextInput } from "react-native";
+import { View, TextInput, Text, Pressable, Alert } from "react-native";
 import React from "react";
 import { StyleSheet } from "react-native";
 import Animated, {
@@ -9,14 +9,17 @@ import Animated, {
   withDelay,
   withTiming,
 } from "react-native-reanimated";
+import { Controller } from "react-hook-form";
 
 export default function InputField({
-  IconFrom,
-  iconName,
-  iconSize,
-  iconColor,
   placeholder,
   textType,
+  children,
+  control,
+  name,
+  secureTextEntry,
+  rules = {},
+  forgotText,
 }) {
   const [inputValue, setInputValue] = React.useState("");
 
@@ -83,32 +86,64 @@ export default function InputField({
   });
 
   return (
-    <Animated.View style={[styles.outerContainer, outerContainerStyle]}>
-      <Animated.View style={[styles.innerContainer, animatedBottomWidth]}>
-        <View style={styles.iconContainer}>
-          <IconFrom name={iconName} size={iconSize} color={iconColor} />
-        </View>
+    <Controller
+      control={control}
+      name={name}
+      rules={rules}
+      render={({
+        field: { value, onChange, onBlur },
+        fieldState: { error },
+      }) => (
+        <>
+          <Animated.View style={[styles.outerContainer, outerContainerStyle]}>
+            <Animated.View style={[styles.innerContainer, animatedBottomWidth]}>
+              <View style={styles.iconContainer}>{children}</View>
 
-        <View style={[styles.inputContainer]}>
-          <Animated.Text style={[styles.placeholderText, animatedStyle]}>
-            {placeholder.toUpperCase()}
-          </Animated.Text>
-          <TextInput
-            style={styles.input}
-            onChangeText={inputValueChangeHandler}
-            onFocus={focusHandler}
-            onBlur={blurHandler}
-            textContentType={textType ? textType : "none"}
-          />
-        </View>
-      </Animated.View>
-    </Animated.View>
+              <View style={[styles.inputContainer]}>
+                <Animated.Text style={[styles.placeholderText, animatedStyle]}>
+                  {placeholder.toUpperCase()}
+                </Animated.Text>
+                <TextInput
+                  value={value}
+                  onChangeText={(inputValue) => {
+                    onChange(inputValue);
+                    inputValueChangeHandler(inputValue);
+                  }}
+                  onBlur={() => {
+                    onBlur();
+                    blurHandler();
+                  }}
+                  style={styles.input}
+                  onFocus={focusHandler}
+                  secureTextEntry={secureTextEntry ? secureTextEntry : false}
+                />
+                <Pressable
+                  style={{ position: "absolute", top: 18, right: 0 }}
+                  onPress={() =>
+                    Alert.alert(
+                      "Clicking on forgot will redirect to forget handler screen"
+                    )
+                  }
+                >
+                  {forgotText}
+                </Pressable>
+              </View>
+            </Animated.View>
+            {error ? (
+              <Text style={styles.errorMessage}>{error.message}</Text>
+            ) : (
+              ""
+            )}
+          </Animated.View>
+        </>
+      )}
+    />
   );
 }
 
 const styles = StyleSheet.create({
   outerContainer: {
-    height: 60,
+    minHeight: 70,
     paddingHorizontal: 5,
     width: "80%",
     justifyContent: "center",
@@ -142,5 +177,8 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     marginBottom: 5,
+  },
+  errorMessage: {
+    color: "#f30c23",
   },
 });

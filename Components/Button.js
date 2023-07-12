@@ -3,9 +3,13 @@ import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign } from "@expo/vector-icons";
 
-export default function Button({ title }) {
+export default function Button({ title, onclick }) {
   return (
-    <Pressable style={styles.buttonContainer}>
+    <Pressable
+      style={styles.buttonContainer}
+      android_ripple={{ color: "rgb(120, 120, 120)", foreground: true }}
+      onPress={onclick}
+    >
       <LinearGradient
         colors={["#rgb(246,199,90)", "#FD9C2D"]}
         start={[0, 0]}
