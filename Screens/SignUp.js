@@ -11,8 +11,11 @@ import { useForm } from "react-hook-form";
 export default function SignUpRoute() {
   const { control, handleSubmit } = useForm();
 
-  const handleFormSubmit = (data) => {
+  const handleFormSubmit = async (data) => {
     console.log(data);
+
+    // const response = await axios.post("http://exampleserver.com/sign-up",data)
+    // posting data to sign-up route
   };
 
   return (
@@ -34,7 +37,13 @@ export default function SignUpRoute() {
         placeholder={"email"}
         name={"email"}
         control={control}
-        rules={{ required: { value: true, message: "Email is required" } }}
+        rules={{
+          required: { value: true, message: "Email is required" },
+          pattern: {
+            value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+            message: "Please check  your email structure",
+          },
+        }}
       >
         <MaterialCommunityIcons
           name={"email-outline"}
@@ -69,6 +78,13 @@ export default function SignUpRoute() {
           minLength: {
             value: 8,
             message: "Password length must be greater than 8",
+          },
+          validate: (fieldValue, formValue) => {
+            console.log(formValue);
+            console.log(fieldValue);
+            return fieldValue === formValue.password
+              ? true
+              : "Must be same as password";
           },
         }}
       >

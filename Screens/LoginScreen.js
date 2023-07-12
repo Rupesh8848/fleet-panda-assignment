@@ -9,9 +9,7 @@ import Button from "../Components/Button";
 import { useForm } from "react-hook-form";
 
 export default function LoginRoute() {
-  const { control, handleSubmit, formState } = useForm();
-
-  const { errors } = formState;
+  const { control, handleSubmit } = useForm();
 
   const handleFormSubmit = (data) => {
     console.log("Handle form submit triggered");
@@ -37,7 +35,13 @@ export default function LoginRoute() {
           placeholder={"email"}
           control={control}
           name="email"
-          rules={{ required: { value: true, message: "Email is required" } }}
+          rules={{
+            required: { value: true, message: "Email is required" },
+            pattern: {
+              value: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+              message: "Please check  your email structure",
+            },
+          }}
         >
           <MaterialCommunityIcons
             name={"email-outline"}
@@ -50,7 +54,13 @@ export default function LoginRoute() {
           name="password"
           control={control}
           secureTextEntry={true}
-          rules={{ required: { value: true, message: "Password is required" } }}
+          rules={{
+            required: { value: true, message: "Password is required" },
+            minLength: {
+              value: 8,
+              message: "Password length must be greater than 8",
+            },
+          }}
         >
           <Feather name={"lock"} size={19} color={"#a0a0a0"} />
         </InputField>
