@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import SignUpRoute from "./Screens/SignUp";
-import LoginRoute from "./Screens/LoginRoute";
+import LoginRoute from "./Screens/LoginScreen";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 

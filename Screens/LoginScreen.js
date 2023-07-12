@@ -6,8 +6,16 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import Footer from "../Components/Footer";
 import Button from "../Components/Button";
+import { useForm } from "react-hook-form";
 
 export default function LoginRoute() {
+  const { control, handleSubmit } = useForm();
+
+  const handleFormSubmit = (data) => {
+    console.log("Handle form submit triggered");
+    console.log(data);
+  };
+
   return (
     <KeyboardAvoidingView behavior="padding" style={styles.mainContainer}>
       <View style={styles.titleContainer}>
@@ -23,24 +31,24 @@ export default function LoginRoute() {
           marginTop: 50,
         }}
       >
-        <InputField
-          placeholder={"email"}
-          IconFrom={MaterialCommunityIcons}
-          iconColor={"#a0a0a0"}
-          iconName={"email-outline"}
-          iconSize={19}
-          textType="emailAddress"
-        />
+        <InputField placeholder={"email"} control={control} name="email">
+          <MaterialCommunityIcons
+            name={"email-outline"}
+            size={19}
+            color={"#a0a0a0"}
+          />
+        </InputField>
         <InputField
           placeholder={"password"}
-          IconFrom={Feather}
-          iconColor={"#a0a0a0"}
-          iconName={"lock"}
-          iconSize={19}
-        />
+          name="password"
+          control={control}
+          secureTextEntry={true}
+        >
+          <Feather name={"lock"} size={19} color={"#a0a0a0"} />
+        </InputField>
       </View>
       <View style={styles.buttonContainer}>
-        <Button title={"login"} />
+        <Button title={"login"} onclick={handleSubmit(handleFormSubmit)} />
       </View>
       <Footer
         footerText={"Don't have an account? "}

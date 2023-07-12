@@ -9,14 +9,15 @@ import Animated, {
   withDelay,
   withTiming,
 } from "react-native-reanimated";
+import { Controller } from "react-hook-form";
 
 export default function InputField({
-  IconFrom,
-  iconName,
-  iconSize,
-  iconColor,
   placeholder,
   textType,
+  children,
+  control,
+  name,
+  secureTextEntry,
 }) {
   const [inputValue, setInputValue] = React.useState("");
 
@@ -85,21 +86,40 @@ export default function InputField({
   return (
     <Animated.View style={[styles.outerContainer, outerContainerStyle]}>
       <Animated.View style={[styles.innerContainer, animatedBottomWidth]}>
-        <View style={styles.iconContainer}>
-          <IconFrom name={iconName} size={iconSize} color={iconColor} />
-        </View>
+        <View style={styles.iconContainer}>{children}</View>
 
         <View style={[styles.inputContainer]}>
           <Animated.Text style={[styles.placeholderText, animatedStyle]}>
             {placeholder.toUpperCase()}
           </Animated.Text>
-          <TextInput
+          <Controller
+            control={control}
+            name={name}
+            render={({ field: { value, onChange, onBlur } }) => (
+              <TextInput
+                value={value}
+                onChangeText={(inputValue) => {
+                  onChange(inputValue);
+                  inputValueChangeHandler(inputValue);
+                }}
+                onBlur={() => {
+                  onBlur();
+                  blurHandler();
+                }}
+                style={styles.input}
+                onFocus={focusHandler}
+                secureTextEntry={secureTextEntry ? true : false}
+              />
+            )}
+          />
+          {/* <TextInput
             style={styles.input}
             onChangeText={inputValueChangeHandler}
             onFocus={focusHandler}
             onBlur={blurHandler}
             textContentType={textType ? textType : "none"}
-          />
+            onChange={changeHandler}
+          /> */}
         </View>
       </Animated.View>
     </Animated.View>
