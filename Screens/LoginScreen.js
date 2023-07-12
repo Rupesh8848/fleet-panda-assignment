@@ -14,6 +14,9 @@ export default function LoginRoute() {
   const handleFormSubmit = (data) => {
     console.log("Handle form submit triggered");
     console.log(data);
+
+    // const response = await axios.post("http://exampleserver.com/sign-up",data)
+    // posting data to sign-up route
   };
 
   return (
@@ -61,6 +64,7 @@ export default function LoginRoute() {
               message: "Password length must be greater than 8",
             },
           }}
+          forgotText={<Text style={styles.forgotText}>FORGOT</Text>}
         >
           <Feather name={"lock"} size={19} color={"#a0a0a0"} />
         </InputField>
@@ -93,4 +97,5 @@ const styles = StyleSheet.create({
   },
   titleContainer: { width: "80%" },
   buttonContainer: { alignItems: "flex-end", width: "80%", marginTop: 35 },
+  forgotText: { color: "#f30c23" },
 });

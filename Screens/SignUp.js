@@ -82,9 +82,9 @@ export default function SignUpRoute() {
           validate: (fieldValue, formValue) => {
             console.log(formValue);
             console.log(fieldValue);
-            return fieldValue === formValue.password
-              ? true
-              : "Must be same as password";
+
+            return fieldValue === formValue.password || "Must match password";
+            //if former condition is true then returns true else returns string
           },
         }}
       >

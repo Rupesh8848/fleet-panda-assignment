@@ -1,4 +1,4 @@
-import { View, TextInput, Text } from "react-native";
+import { View, TextInput, Text, Pressable, Alert } from "react-native";
 import React from "react";
 import { StyleSheet } from "react-native";
 import Animated, {
@@ -19,6 +19,7 @@ export default function InputField({
   name,
   secureTextEntry,
   rules = {},
+  forgotText,
 }) {
   const [inputValue, setInputValue] = React.useState("");
 
@@ -116,6 +117,16 @@ export default function InputField({
                   onFocus={focusHandler}
                   secureTextEntry={secureTextEntry ? secureTextEntry : false}
                 />
+                <Pressable
+                  style={{ position: "absolute", top: 18, right: 0 }}
+                  onPress={() =>
+                    Alert.alert(
+                      "Clicking on forgot will redirect to forget handler screen"
+                    )
+                  }
+                >
+                  {forgotText}
+                </Pressable>
               </View>
             </Animated.View>
             {error ? (
