@@ -21,21 +21,40 @@ export default function SignUpRoute() {
         <Text style={styles.title}>Create Account</Text>
       </View>
 
-      <InputField placeholder={"full name"} name={"fullName"} control={control}>
+      <InputField
+        placeholder={"full name"}
+        name={"fullName"}
+        control={control}
+        rules={{ required: { value: true, message: "Full Name is required" } }}
+      >
         <FontAwesome5 name={"user"} size={19} color={"#a0a0a0"} />
       </InputField>
-      <InputField placeholder={"email"} name={"email"} control={control}>
+
+      <InputField
+        placeholder={"email"}
+        name={"email"}
+        control={control}
+        rules={{ required: { value: true, message: "Email is required" } }}
+      >
         <MaterialCommunityIcons
           name={"email-outline"}
           size={19}
           color={"#a0a0a0"}
         />
       </InputField>
+
       <InputField
         placeholder={"password"}
         name={"password"}
         control={control}
         secureTextEntry={true}
+        rules={{
+          required: { value: true, message: "Password is required" },
+          minLength: {
+            value: 8,
+            message: "Password length must be greater than 8",
+          },
+        }}
       >
         <Feather name={"lock"} size={19} color={"#a0a0a0"} />
       </InputField>
@@ -45,6 +64,13 @@ export default function SignUpRoute() {
         name={"confirmPassword"}
         control={control}
         secureTextEntry={true}
+        rules={{
+          required: { value: true, message: "Confirm Password is required" },
+          minLength: {
+            value: 8,
+            message: "Password length must be greater than 8",
+          },
+        }}
       >
         <Feather name={"lock"} size={19} color={"#a0a0a0"} />
       </InputField>

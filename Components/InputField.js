@@ -1,4 +1,4 @@
-import { View, TextInput } from "react-native";
+import { View, TextInput, Text } from "react-native";
 import React from "react";
 import { StyleSheet } from "react-native";
 import Animated, {
@@ -18,6 +18,7 @@ export default function InputField({
   control,
   name,
   secureTextEntry,
+  rules = {},
 }) {
   const [inputValue, setInputValue] = React.useState("");
 
@@ -84,51 +85,54 @@ export default function InputField({
   });
 
   return (
-    <Animated.View style={[styles.outerContainer, outerContainerStyle]}>
-      <Animated.View style={[styles.innerContainer, animatedBottomWidth]}>
-        <View style={styles.iconContainer}>{children}</View>
+    <Controller
+      control={control}
+      name={name}
+      rules={rules}
+      render={({
+        field: { value, onChange, onBlur },
+        fieldState: { error },
+      }) => (
+        <>
+          <Animated.View style={[styles.outerContainer, outerContainerStyle]}>
+            <Animated.View style={[styles.innerContainer, animatedBottomWidth]}>
+              <View style={styles.iconContainer}>{children}</View>
 
-        <View style={[styles.inputContainer]}>
-          <Animated.Text style={[styles.placeholderText, animatedStyle]}>
-            {placeholder.toUpperCase()}
-          </Animated.Text>
-          <Controller
-            control={control}
-            name={name}
-            render={({ field: { value, onChange, onBlur } }) => (
-              <TextInput
-                value={value}
-                onChangeText={(inputValue) => {
-                  onChange(inputValue);
-                  inputValueChangeHandler(inputValue);
-                }}
-                onBlur={() => {
-                  onBlur();
-                  blurHandler();
-                }}
-                style={styles.input}
-                onFocus={focusHandler}
-                secureTextEntry={secureTextEntry ? true : false}
-              />
+              <View style={[styles.inputContainer]}>
+                <Animated.Text style={[styles.placeholderText, animatedStyle]}>
+                  {placeholder.toUpperCase()}
+                </Animated.Text>
+                <TextInput
+                  value={value}
+                  onChangeText={(inputValue) => {
+                    onChange(inputValue);
+                    inputValueChangeHandler(inputValue);
+                  }}
+                  onBlur={() => {
+                    onBlur();
+                    blurHandler();
+                  }}
+                  style={styles.input}
+                  onFocus={focusHandler}
+                  secureTextEntry={secureTextEntry ? secureTextEntry : false}
+                />
+              </View>
+            </Animated.View>
+            {error ? (
+              <Text style={styles.errorMessage}>{error.message}</Text>
+            ) : (
+              ""
             )}
-          />
-          {/* <TextInput
-            style={styles.input}
-            onChangeText={inputValueChangeHandler}
-            onFocus={focusHandler}
-            onBlur={blurHandler}
-            textContentType={textType ? textType : "none"}
-            onChange={changeHandler}
-          /> */}
-        </View>
-      </Animated.View>
-    </Animated.View>
+          </Animated.View>
+        </>
+      )}
+    />
   );
 }
 
 const styles = StyleSheet.create({
   outerContainer: {
-    height: 60,
+    minHeight: 70,
     paddingHorizontal: 5,
     width: "80%",
     justifyContent: "center",
@@ -162,5 +166,8 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     marginBottom: 5,
+  },
+  errorMessage: {
+    color: "#f30c23",
   },
 });

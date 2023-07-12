@@ -9,7 +9,9 @@ import Button from "../Components/Button";
 import { useForm } from "react-hook-form";
 
 export default function LoginRoute() {
-  const { control, handleSubmit } = useForm();
+  const { control, handleSubmit, formState } = useForm();
+
+  const { errors } = formState;
 
   const handleFormSubmit = (data) => {
     console.log("Handle form submit triggered");
@@ -31,7 +33,12 @@ export default function LoginRoute() {
           marginTop: 50,
         }}
       >
-        <InputField placeholder={"email"} control={control} name="email">
+        <InputField
+          placeholder={"email"}
+          control={control}
+          name="email"
+          rules={{ required: { value: true, message: "Email is required" } }}
+        >
           <MaterialCommunityIcons
             name={"email-outline"}
             size={19}
@@ -43,6 +50,7 @@ export default function LoginRoute() {
           name="password"
           control={control}
           secureTextEntry={true}
+          rules={{ required: { value: true, message: "Password is required" } }}
         >
           <Feather name={"lock"} size={19} color={"#a0a0a0"} />
         </InputField>
